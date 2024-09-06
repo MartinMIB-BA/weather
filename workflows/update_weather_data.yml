@@ -3,6 +3,7 @@ name: Weather Data Update
 on:
   schedule:
     - cron: "0 * * * *"  # Spúšťa každú hodinu
+  workflow_dispatch:  # Manuálne spustenie
 
 jobs:
   update-weather:
@@ -18,7 +19,15 @@ jobs:
         python-version: '3.x'
 
     - name: Install dependencies
-      run: pip install -r requirements.txt
+      run: |
+        pip install -r requirements.txt
+        pip install plotly geopy cfgrib ecmwf-opendata pytz  # Závislosti tvojho skriptu
 
     - name: Run weather update script
-      run: python weather_update.py
+      run: python weather_update.py  # Spustí tvoj skript na sťahovanie dát a generovanie grafov
+
+    - name: Upload HTML to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        personal_token: ${{ secrets.GITHUB_TOKEN }}  # Použije GitHub Token pre autentifikáciu
+        publish_dir: ./  # Kde sa nachádzajú tvoje HTML súbory
