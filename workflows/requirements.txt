@@ -1,1 +1,7 @@
 
+plotly
+cfgrib
+geopy
+pytz
+pandas
+ecmwf-opendata
