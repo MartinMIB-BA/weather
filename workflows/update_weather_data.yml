@@ -1,36 +1,24 @@
-name: Update Weather Data
+name: Weather Data Update
 
-# Toto zaisťuje, že sa akcia spustí každú hodinu
 on:
   schedule:
-    - cron: '0 * * * *'  # Spustí sa každú hodinu
+    - cron: "0 * * * *"  # Spúšťa každú hodinu
 
 jobs:
-  update:
-    runs-on: ubuntu-latest  # GitHub použije poslednú verziu Ubuntu na spustenie skriptu
+  update-weather:
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2  # Skontroluje váš kód z GitHubu, aby ste s ním mohli pracovať
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'  # Tu sa nainštaluje posledná verzia Pythonu
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
 
-      - name: Install dependencies
-        run: |
-          pip install -r requirements.txt  # Nainštaluje závislosti uvedené v súbore requirements.txt (napr. plotly, cfgrib)
+    - name: Install dependencies
+      run: pip install -r requirements.txt
 
-      - name: Run weather script
-        run: |
-          python your_script.py  # Spustí váš Python skript, ktorý stiahne dáta a vygeneruje nové HTML súbory
-
-      - name: Commit updated HTML files
-        run: |
-          git config --local user.email "actions@github.com"
-          git config --local user.name "GitHub Actions"
-          git add forecasted_temperature.html forecasted_precipitation.html
-          git commit -m "Update weather data"
-          git push
-
+    - name: Run weather update script
+      run: python weather_update.py
